@@ -135,27 +135,28 @@ function limitTest(x, y) {
 }
 
 function discoverSquare(i, j) {
+    let calculatedId = i * no_cells + j;
     arrayWin[i][j] = 1;
     if(array[i][j] == 0 || array[i][j] == -1) {
-        document.getElementById(i * no_cells + j).style.background = "white";
+        document.getElementById(calculatedId).style.background = "white";
     }
     else {
         if(array[i][j] == 1) {
-            document.getElementById(i * no_cells + j).style.color = "blue";
+            document.getElementById(calculatedId).style.color = "blue";
         }
         else if(array[i][j] == 2) {
-            document.getElementById(i * no_cells + j).style.color = "green";
+            document.getElementById(calculatedId).style.color = "green";
 
         }
         else if(array[i][j] == 3) {
-            document.getElementById(i * no_cells + j).style.color = "red";
+            document.getElementById(calculatedId).style.color = "red";
         }
-        document.getElementById(i * no_cells + j).innerHTML = array[i][j];
+        document.getElementById(calculatedId).innerHTML = array[i][j];
     }
     if(array[i][j] == 'X') {
-        document.getElementById(i * no_cells + j).innerHTML = '💣';
+        document.getElementById(calculatedId).innerHTML = '💣';
     }
-    document.getElementById(i * no_cells + j).setAttribute("onclick","click()");
+    document.getElementById(calculatedId).setAttribute("onclick","click()");
     checkGameFinished();
 }
 
@@ -184,23 +185,29 @@ function updateNeighbours() {
         for(let j = 0; j < no_cells; j++)
         {
             if(array[i][j] != 'X') {
-                if((i - 1) >= 0 && ((j - 1) >= 0) && array[i - 1][j - 1] == 'X')
-                    minesNearby++;
-                if((i - 1) >= 0 && array[i - 1][j] == 'X')
-                    minesNearby++;
-                if((i - 1) >= 0 && ((j + 1) < no_cells) && array[i - 1][j + 1] == 'X')
-                    minesNearby++;
+                /* upper squares */
+                if((i - 1) >= 0) {
+                    if(((j - 1) >= 0) && (array[i - 1][j - 1] == 'X'))
+                        minesNearby++;
+                    if(array[i - 1][j] == 'X')
+                        minesNearby++;
+                    if(((j + 1) < no_cells) && (array[i - 1][j + 1] == 'X'))
+                        minesNearby++;
+                }
+                /* left and right squares */ 
                 if(((j - 1) >= 0) && array[i][j - 1] == 'X')
                     minesNearby++;
                 if(((j + 1) < no_cells) && array[i][j + 1] == 'X')
                     minesNearby++;
-                if((i + 1) < no_cells && ((j - 1) >= 0) && array[i + 1][j - 1] == 'X')
-                    minesNearby++;
-                if((i + 1) < no_cells && (j >= 0) && array[i + 1][j] == 'X')
-                    minesNearby++;
-                if((i + 1) < no_cells && ((j + 1) < no_cells) && array[i + 1][j + 1] == 'X')
-                    minesNearby++;
-
+                /* lower squares */
+                if((i + 1) < no_cells) {
+                    if(((j - 1) >= 0) && array[i + 1][j - 1] == 'X')
+                        minesNearby++;
+                    if((j >= 0) && array[i + 1][j] == 'X')
+                        minesNearby++;
+                    if(((j + 1) < no_cells) && array[i + 1][j + 1] == 'X')
+                        minesNearby++;
+                }
                 array[i][j] = minesNearby;
             }
             minesNearby = 0;
